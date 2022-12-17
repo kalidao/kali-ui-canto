@@ -25,7 +25,7 @@ export const fetchProposals = async (address: string) => {
       ),
       action: proposalArrays,
     }
-    // proposal.description = description
+
     proposals.push(propObj)
   }
 
