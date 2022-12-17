@@ -8,15 +8,17 @@ const Propose = () => {
   const [content, setContent] = useState('')
   const [proposal, setProposal] = useState('menu')
 
-  const proposals: { [key: string]: {
-    component: React.ReactNode
-  } } = {
+  const proposals: {
+    [key: string]: {
+      component: React.ReactNode
+    }
+  } = {
     menu: {
       component: <ProposalsMenu setProposal={setProposal} />,
     },
     addMembers: {
-      component: <AddMembers setProposal={setProposal} content={content} title={title} />
-    }
+      component: <AddMembers setProposal={setProposal} content={content} title={title} />,
+    },
   }
 
   return (
@@ -41,7 +43,7 @@ const Propose = () => {
           {proposals[proposal]['component']}
         </FieldSet>
       </Stack>
-  </Card>
+    </Card>
   )
 }
 

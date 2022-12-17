@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useContractWrite } from 'wagmi'
-import { DAO_ABI} from '~/constants/'
+import { DAO_ABI } from '~/constants/'
 import { useRouter } from 'next/router'
 import { createProposal } from './createProposal'
 import { FieldSet, Text, Input, Button, Stack, IconClose, IconUserSolid } from '@kalidao/reality'
@@ -35,7 +35,6 @@ export default function AddMembers({ setProposal, content, title }: ProposalProp
     name: 'members',
   })
 
-
   const {
     isSuccess: isProposeSuccess,
     isError: isProposeError,
@@ -62,19 +61,19 @@ export default function AddMembers({ setProposal, content, title }: ProposalProp
     }
 
     const recipients = data.members.map((member) => member.address as `0xstring`)
-    const shares = data.members.map((member) => ethers.utils.parseEther(member.share.toString())) 
+    const shares = data.members.map((member) => ethers.utils.parseEther(member.share.toString()))
     const payloads = data.members.map((member) => ethers.constants.AddressZero as `0xstring`)
-   
+
     if (docs) {
       try {
         const tx = await propose({
           recklesslySetUnpreparedArgs: [0, docs, recipients, shares, payloads],
         })
-        
+
         if (tx) {
-            await tx.wait(1).then(() => {
-                router.push(`/daos/7700/${dao}/`)
-            })
+          await tx.wait(1).then(() => {
+            router.push(`/daos/7700/${dao}/`)
+          })
         }
         console.log('tx', tx)
       } catch (e) {
@@ -90,72 +89,72 @@ export default function AddMembers({ setProposal, content, title }: ProposalProp
         legend="Mint Tokens"
         description="This will create a proposal to create and give tokens to the recipient."
       >
-             <Stack justify="flex-start">
-        {fields.map((item, index) => {
-          return (
-            <Stack key={item.id} direction="horizontal" align="center" justify="center">
-              <Input
-                label={`Member`}
-                hideLabel={index !== 0}
-                id="member"
-                {...register(`members.${index}.address` as const, {
-                  required: true,
-                })}
-                defaultValue={item.address}
-                type="text"
-              />
-              <Input
-                label="Tokens"
-                hideLabel={index !== 0}
-                id="share"
-                type="number"
-                {...register(`members.${index}.share` as const, {
-                  required: true,
-                  min: 1,
-                })}
-                defaultValue={item.share}
-              />
-              <Button
-                tone="red"
-                variant="secondary"
-                size="small"
-                shape="circle"
-                onClick={(e) => {
-                  e.preventDefault()
-                  remove(index)
-                }}
-              >
-                <IconClose />
-              </Button>
-            </Stack>
-          )
-        })}
-        <Button
-          suffix={<IconUserSolid />}
-          variant="secondary"
-          tone="green"
-          onClick={(e) => {
-            e.preventDefault()
-            append({
-              address: '',
-              share: '1000',
-            })
-          }}
-        >
-          Add
-        </Button>
-      </Stack>
+        <Stack justify="flex-start">
+          {fields.map((item, index) => {
+            return (
+              <Stack key={item.id} direction="horizontal" align="center" justify="center">
+                <Input
+                  label={`Member`}
+                  hideLabel={index !== 0}
+                  id="member"
+                  {...register(`members.${index}.address` as const, {
+                    required: true,
+                  })}
+                  defaultValue={item.address}
+                  type="text"
+                />
+                <Input
+                  label="Tokens"
+                  hideLabel={index !== 0}
+                  id="share"
+                  type="number"
+                  {...register(`members.${index}.share` as const, {
+                    required: true,
+                    min: 1,
+                  })}
+                  defaultValue={item.share}
+                />
+                <Button
+                  tone="red"
+                  variant="secondary"
+                  size="small"
+                  shape="circle"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    remove(index)
+                  }}
+                >
+                  <IconClose />
+                </Button>
+              </Stack>
+            )
+          })}
+          <Button
+            suffix={<IconUserSolid />}
+            variant="secondary"
+            tone="green"
+            onClick={(e) => {
+              e.preventDefault()
+              append({
+                address: '',
+                share: '1000',
+              })
+            }}
+          >
+            Add
+          </Button>
+        </Stack>
       </FieldSet>
       <Stack direction={'horizontal'} justify="space-between">
         <Back onClick={() => setProposal?.('menu')} />
         <Button
-        center
-        variant="primary"
-        onClick={handleSubmit(submit)}
-        loading={loading || isProposePending}
-        disabled={!propose || isProposePending || isProposeSuccess}
+          center
+          variant="primary"
+          onClick={handleSubmit(submit)}
+          loading={loading || isProposePending}
+          disabled={!propose || isProposePending || isProposeSuccess}
         >
-        {isProposePending ? 'Submitting...' : 'Submit'}
+          {isProposePending ? 'Submitting...' : 'Submit'}
         </Button>
       </Stack>
       <Text>

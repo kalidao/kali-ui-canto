@@ -7,7 +7,7 @@ const Wrappr = () => {
         <Avatar
           src={'https://content.wrappr.wtf/ipfs/QmNndADsqj7s4NC2tRraGxhSffCbdN1eHpPdusBQE4c84k'}
           label="dao wrappr"
-          size="76"
+          size="44"
           shape="square"
         />
         <Text variant="label">Wrappr UNA (Wyoming)</Text>

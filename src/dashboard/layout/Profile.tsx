@@ -46,8 +46,6 @@ const Profile = () => {
               {token?.name} ({token?.symbol})
             </Heading>
             <Text>{meta?.mission}</Text>
-            <Divider />
-            <Button variant="secondary">Tribute</Button>
           </Stack>
         </Box>
       </Stack>

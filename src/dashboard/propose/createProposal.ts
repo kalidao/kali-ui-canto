@@ -1,13 +1,7 @@
 import { convertIpfsHash } from '~/utils/upload'
 
 // createProposal and upload
-const createProposal = async (
-  dao: string,
-  chainId: number,
-  type: number,
-  title: string,
-  description: string
-) => {
+const createProposal = async (dao: string, chainId: number, type: number, title: string, description: string) => {
   try {
     const obj = {
       contract: 'KaliV2',
