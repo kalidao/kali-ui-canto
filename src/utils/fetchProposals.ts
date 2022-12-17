@@ -12,8 +12,9 @@ export const fetchProposals = async (address: string) => {
   for (let i = 0; i < proposalCount; i++) {
     const proposal = await contract.proposals(i)
     const proposalState = await contract.proposalStates(i)
+    const proposalArrays = await contract.getProposalArrays(i)
     const description = await fetcher(proposal.description)
-    const timeLeft = new Date().getTime() - new Date(votingPeriod * 1000 + proposal?.creationTime * 1000).getTime()
+
     const propObj = {
       ...proposal,
       id: i,
@@ -22,6 +23,7 @@ export const fetchProposals = async (address: string) => {
       votingEnds: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
         new Date(votingPeriod * 1000 + proposal?.creationTime * 1000),
       ),
+      action: proposalArrays,
     }
     // proposal.description = description
     proposals.push(propObj)
