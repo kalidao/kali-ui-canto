@@ -6,6 +6,13 @@ import { useDaoStore } from '../useDaoStore'
 
 export default function Vote({ id }: { id: number }) {
   const dao = useDaoStore((state) => state.address)
+  const { config: process, error: processError } = usePrepareContractWrite({
+    address: dao,
+    abi: DAO_ABI,
+    chainId: 7700,
+    functionName: 'processProposal',
+    args: [ethers.BigNumber.from(id)],
+  })
   const { config: yes, error: yesError } = usePrepareContractWrite({
     address: dao,
     abi: DAO_ABI,
@@ -20,8 +27,25 @@ export default function Vote({ id }: { id: number }) {
     functionName: 'vote',
     args: [ethers.BigNumber.from(id), false],
   })
+  const { write: processWrite, isSuccess: processSuccess, isLoading: processLoading } = useContractWrite(process)
   const { write: yesWrite, isSuccess: yesSuccess, isLoading: yesLoading } = useContractWrite(yes)
   const { write: noWrite, isSuccess: noSuccess, isLoading: noLoading } = useContractWrite(no)
+
+  console.log('process', processError)
+  if (processWrite) {
+    return (
+      <Button
+        size="small"
+        tone="blue"
+        variant="secondary"
+        loading={processLoading}
+        disabled={!processWrite || processSuccess}
+        onClick={() => processWrite?.()}
+      >
+        Process
+      </Button>
+    )
+  }
 
   return (
     <Stack direction={'horizontal'}>
