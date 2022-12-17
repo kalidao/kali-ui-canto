@@ -1,6 +1,8 @@
 import create from 'zustand'
 import { ethers } from 'ethers'
 import { DAO_ABI } from '~/constants'
+import { fetchProposals } from '~/utils/fetchProposals'
+
 interface DaoStore {
   chainId: number
   address: string
@@ -16,6 +18,8 @@ interface DaoStore {
     logo: string
   }
   setMeta: (docs: string) => void
+  proposals: any[]
+  setProposals: (address: string) => void
 }
 
 export const useDaoStore = create<DaoStore>((set) => ({
@@ -47,5 +51,13 @@ export const useDaoStore = create<DaoStore>((set) => ({
     const meta = await fetch(docs)
     const { mission, logo } = await meta.json()
     set({ meta: { mission, logo } })
+  },
+  proposals: [],
+  setProposals: async (address: string) => {
+    if (address == '') return
+    const proposals = await fetchProposals(address)
+    set({
+      proposals: proposals,
+    })
   },
 }))

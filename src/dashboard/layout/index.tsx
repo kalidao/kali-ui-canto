@@ -30,9 +30,6 @@ export default function DashboardLayout({ heading, content, children }: LayoutPr
           >
             <Profile />
             <Wrappr />
-            {/* <Nav address={dao as string} chainId={Number(chainId)} />
-            <Treasury address={dao as string} chainId={Number(chainId)} />
-            <Members /> */}
           </Stack>
           {children}
         </Stack>

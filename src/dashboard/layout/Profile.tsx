@@ -15,6 +15,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!address) return
+
     setToken(address)
   }, [address, setToken])
 
