@@ -9,7 +9,7 @@ export const fetchProposals = async (address: string) => {
   const proposalCount = await contract.proposalCount()
 
   let proposals = []
-  for (let i = 0; i < proposalCount; i++) {
+  for (let i = 1; i < proposalCount; i++) {
     const proposal = await contract.proposals(i)
     const proposalState = await contract.proposalStates(i)
     const proposalArrays = await contract.getProposalArrays(i)
