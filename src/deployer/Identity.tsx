@@ -15,6 +15,7 @@ export default function Identity({ setStep }: Props) {
   const setDaoAddress = useDeployStore((state) => state.setDaoAddress)
   const [nameError, setNameError] = useState('')
   const [symbolError, setSymbolError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const validateName = () => {
     if (name == '') {
@@ -34,8 +35,10 @@ export default function Identity({ setStep }: Props) {
 
   const submit = async () => {
     if (name === '' || symbol === '') return
+    setLoading(true)
     await setDaoAddress(name)
     setStep(1)
+    setLoading(false)
   }
 
   return (
@@ -65,7 +68,7 @@ export default function Identity({ setStep }: Props) {
           error={symbolError}
         />
         <Stack direction={'horizontal'} justify="flex-end">
-          <Button variant="primary" type="submit" onClick={submit}>
+          <Button variant="primary" type="submit" onClick={submit} loading={loading}>
             Next
           </Button>
         </Stack>
