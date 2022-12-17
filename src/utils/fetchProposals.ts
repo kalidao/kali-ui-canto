@@ -19,7 +19,9 @@ export const fetchProposals = async (address: string) => {
       id: i,
       description: description,
       state: proposalState,
-      votingEnds:   new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(votingPeriod * 1000 + proposal?.creationTime * 1000)),
+      votingEnds: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
+        new Date(votingPeriod * 1000 + proposal?.creationTime * 1000),
+      ),
     }
     // proposal.description = description
     proposals.push(propObj)

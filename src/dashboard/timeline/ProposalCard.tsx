@@ -19,34 +19,34 @@ type PropCardProp = {
 }
 
 const convertType = (type: number) => {
-    switch (type) {
-        case 0:
-            return 'MINT'
-        case 1:
-            return 'BURN'
-        case 2:
-            return 'CALL'
-        case 3:
-            return 'VPERIOD'
-        case 4:
-            return 'GPERIOD'
-        case 5:
-            return 'QUORUM'
-        case 6:
-            return 'SUPERMAJORITY'
-        case 7:
-            return 'TYPE'
-        case 8:
-            return 'PAUSE'
-        case 9:
-            return 'EXTENSION'
-        case 10:
-            return 'ESCAPE'
-        case 11:
-            return 'DOCS'
-        default:
-            return 'UNKNOWN'
-    }
+  switch (type) {
+    case 0:
+      return 'MINT'
+    case 1:
+      return 'BURN'
+    case 2:
+      return 'CALL'
+    case 3:
+      return 'VPERIOD'
+    case 4:
+      return 'GPERIOD'
+    case 5:
+      return 'QUORUM'
+    case 6:
+      return 'SUPERMAJORITY'
+    case 7:
+      return 'TYPE'
+    case 8:
+      return 'PAUSE'
+    case 9:
+      return 'EXTENSION'
+    case 10:
+      return 'ESCAPE'
+    case 11:
+      return 'DOCS'
+    default:
+      return 'UNKNOWN'
+  }
 }
 
 export default function ProposalCard({ proposal }: PropCardProp) {
@@ -54,8 +54,8 @@ export default function ProposalCard({ proposal }: PropCardProp) {
 
   const currentStatus = (): Status => {
     return {
-        color: proposal?.state?.processed ? proposal?.state?.passed ? 'green' : 'red' : 'blue',
-        text: proposal?.state?.processed ? proposal?.state?.passed ? 'Passed' : 'Failed' : 'Voting'
+      color: proposal?.state?.processed ? (proposal?.state?.passed ? 'green' : 'red') : 'blue',
+      text: proposal?.state?.processed ? (proposal?.state?.passed ? 'Passed' : 'Failed') : 'Voting',
     }
   }
 
@@ -63,34 +63,34 @@ export default function ProposalCard({ proposal }: PropCardProp) {
 
   return (
     <Box className={styles.proposalCard}>
-       <Box>
-          <Stack
-            direction={{
-              xs: 'horizontal',
-            }}
-            align={{ xs: 'flex-start', md: 'center' }}
-            justify={'space-between'}
-          >
-            <Stack direction={{ xs: 'vertical', md: 'horizontal' }} align={{ xs: 'flex-start', md: 'center' }}>
-              <Text size="extraLarge" color="foreground">{`#${proposal?.id} ${
-                proposal?.description?.title ? proposal?.description?.title : 'Untitled'
-              }`}</Text>
-              <Tag tone="secondary" size="small">
-                {truncateAddress(proposal?.proposer)}
-              </Tag>
-            </Stack>
-            <Stack direction={"horizontal"}>
-            <Tag label="Ends" tone={"orange"} size="medium">
-                {proposal?.votingEnds.toString()}
+      <Box>
+        <Stack
+          direction={{
+            xs: 'horizontal',
+          }}
+          align={{ xs: 'flex-start', md: 'center' }}
+          justify={'space-between'}
+        >
+          <Stack direction={{ xs: 'vertical', md: 'horizontal' }} align={{ xs: 'flex-start', md: 'center' }}>
+            <Text size="extraLarge" color="foreground">{`#${proposal?.id} ${
+              proposal?.description?.title ? proposal?.description?.title : 'Untitled'
+            }`}</Text>
+            <Tag tone="secondary" size="small">
+              {truncateAddress(proposal?.proposer)}
+            </Tag>
+          </Stack>
+          <Stack direction={'horizontal'}>
+            <Tag label="Ends" tone={'orange'} size="medium">
+              {proposal?.votingEnds.toString()}
             </Tag>
             <Tag label={convertType(proposal?.proposalType)} tone={color!} size="medium">
               {text}
             </Tag>
-            </Stack>
           </Stack>
-          <Text>
-            {proposal?.description?.description ? proposal?.description?.description : 'No description provided.'}
-          </Text>
+        </Stack>
+        <Text>
+          {proposal?.description?.description ? proposal?.description?.description : 'No description provided.'}
+        </Text>
       </Box>
       <Stack direction={'horizontal'} align="center" justify={'space-between'}>
         <Vote id={proposal.id} />
