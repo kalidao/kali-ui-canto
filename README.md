@@ -1,5 +1,7 @@
 ## Canto Online Hackathon | Chapter 1, Season 3 | December 1 - 17
 
+*Canto Collectives*
+
 [**Apply to Hack**](https://eugnmr538db.typeform.com/to/ibNJdDpB)
 
 The Canto Online Hackathon (COH) is a virtual summit that invites developers, creatives, and communicators to launch the next wave of apps, infrastructure, and original work on Canto.
