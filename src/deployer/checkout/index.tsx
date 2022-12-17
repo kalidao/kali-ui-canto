@@ -93,7 +93,7 @@ export default function Checkout({ setStep }: Props) {
       BigNumber.from(ethers.utils.arrayify(dao_address)),
       BigNumber.from(1),
       ethers.constants.HashZero,
-      docs_,
+      '',
       dao_address,
     ])
     extensionsArray.push(contracts[7700]['una'])
