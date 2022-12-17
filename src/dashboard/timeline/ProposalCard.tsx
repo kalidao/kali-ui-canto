@@ -11,7 +11,6 @@ import { ethers } from 'ethers'
 type Status = {
   text: string
   color: 'accent' | 'green' | 'red' | 'blue' | 'orange' | 'pink' | 'purple' | 'violet' | 'secondary' | undefined
-  icon: React.ReactNode
 }
 
 // TODO
@@ -19,50 +18,44 @@ type PropCardProp = {
   proposal: any
 }
 
+const convertType = (type: number) => {
+    switch (type) {
+        case 0:
+            return 'MINT'
+        case 1:
+            return 'BURN'
+        case 2:
+            return 'CALL'
+        case 3:
+            return 'VPERIOD'
+        case 4:
+            return 'GPERIOD'
+        case 5:
+            return 'QUORUM'
+        case 6:
+            return 'SUPERMAJORITY'
+        case 7:
+            return 'TYPE'
+        case 8:
+            return 'PAUSE'
+        case 9:
+            return 'EXTENSION'
+        case 10:
+            return 'ESCAPE'
+        case 11:
+            return 'DOCS'
+        default:
+            return 'UNKNOWN'
+    }
+}
+
 export default function ProposalCard({ proposal }: PropCardProp) {
   const dao = useDaoStore((state) => state.address)
 
   const currentStatus = (): Status => {
-    // unsponsored
-    if (!proposal?.sponsored) {
-      return {
-        color: 'secondary',
-        icon: <></>,
-        text: 'Unsponsored',
-      }
-    }
-    // voting
-    const timeLeft =
-      new Date().getTime() - new Date(proposal?.dao?.votingPeriod * 1000 + proposal?.votingStarts * 1000).getTime()
-    if (proposal?.sponsored === true) {
-      if (timeLeft > 0) {
-        if (proposal?.status === null) {
-          return {
-            color: 'accent',
-            icon: <></>,
-            text: 'Process',
-          }
-        } else {
-          return {
-            color: proposal?.status ? 'green' : 'red',
-            icon: <></>,
-            text: proposal?.status ? 'Passed' : 'Failed',
-          }
-        }
-      } else {
-        return {
-          color: 'accent',
-          icon: <></>,
-          text: 'Voting',
-        }
-      }
-    }
-    // execute
-
     return {
-      color: undefined,
-      icon: <></>,
-      text: '...',
+        color: proposal?.state?.processed ? proposal?.state?.passed ? 'green' : 'red' : 'blue',
+        text: proposal?.state?.processed ? proposal?.state?.passed ? 'Passed' : 'Failed' : 'Voting'
     }
   }
 
@@ -70,18 +63,7 @@ export default function ProposalCard({ proposal }: PropCardProp) {
 
   return (
     <Box className={styles.proposalCard}>
-      <Link
-        href={{
-          pathname: '/daos/[chainId]/[dao]/proposals/[proposalId]',
-          query: {
-            dao: dao as string,
-            chainId: '7700',
-            proposalId: proposal?.id,
-          },
-        }}
-        passHref
-      >
-        <a className={styles.linkStyle}>
+       <Box>
           <Stack
             direction={{
               xs: 'horizontal',
@@ -97,15 +79,19 @@ export default function ProposalCard({ proposal }: PropCardProp) {
                 {truncateAddress(proposal?.proposer)}
               </Tag>
             </Stack>
-            <Tag label={proposal['proposalType']} tone={color!} size="medium">
+            <Stack direction={"horizontal"}>
+            <Tag label="Ends" tone={"orange"} size="medium">
+                {proposal?.votingEnds.toString()}
+            </Tag>
+            <Tag label={convertType(proposal?.proposalType)} tone={color!} size="medium">
               {text}
             </Tag>
+            </Stack>
           </Stack>
           <Text>
             {proposal?.description?.description ? proposal?.description?.description : 'No description provided.'}
           </Text>
-        </a>
-      </Link>
+      </Box>
       <Stack direction={'horizontal'} align="center" justify={'space-between'}>
         <Vote id={proposal.id} />
         <Stack direction={'horizontal'}>
