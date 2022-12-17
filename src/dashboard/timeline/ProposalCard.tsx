@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react'
 import Link from 'next/link'
 // import Vote from '../proposal/vote'
-import { Heading, Box, Text, Tag, Card, Stack } from '@kalidao/reality'
+import { Heading, Box, Text, Tag, Card, Stack, Stat } from '@kalidao/reality'
 import { truncateAddress } from '~/utils/truncateAddress'
 import * as styles from './styles.css'
 import { useDaoStore } from '../useDaoStore'
 import Vote from './Vote'
+import { ethers } from 'ethers'
 
 type Status = {
   text: string
@@ -105,7 +106,13 @@ export default function ProposalCard({ proposal }: PropCardProp) {
           </Text>
         </a>
       </Link>
-      <Vote id={proposal.id} />
+      <Stack direction={'horizontal'} align="center" justify={'space-between'}>
+        <Vote id={proposal.id} />
+        <Stack direction={'horizontal'}>
+          <Stat size="small" label="Yes" value={ethers.utils.formatEther(proposal?.yesVotes)} />
+          <Stat size="small" label="No" value={ethers.utils.formatEther(proposal?.noVotes)} />
+        </Stack>
+      </Stack>
     </Box>
   )
 }
