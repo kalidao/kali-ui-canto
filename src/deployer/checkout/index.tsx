@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Stack, Box, Button } from '@kalidao/reality'
+import { Stack, Box, Text, Button, Spinner } from '@kalidao/reality'
 import { FieldSet, Input } from '@kalidao/reality'
 import { useDeployStore } from '../useDeployStore'
 import Review from './Review'
@@ -8,6 +8,7 @@ import { contracts, FACTORY_ABI, WRAPPR_ABI } from '~/constants'
 import { useRouter } from 'next/router'
 import { ethers, BigNumber } from 'ethers'
 import { uploadFile, uploadJSON } from '~/utils/upload'
+import { createAgreement } from '~/utils/createAgreement'
 
 type Props = {
   setStep: React.Dispatch<React.SetStateAction<number>>
@@ -64,11 +65,13 @@ export default function Checkout({ setStep }: Props) {
     // founders
     const { voters, shares } = validateFounders(founders)
 
+    setMessage('Uploading DAO metadata... 📤')
     // docs_
     // upload logo
     let docs_
+    let logo_
     try {
-      const logo_ = await uploadFile(logo)
+      logo_ = await uploadFile(logo)
       docs_ = await uploadJSON({
         name,
         symbol,
@@ -86,19 +89,64 @@ export default function Checkout({ setStep }: Props) {
       return
     }
 
+    const tokenId = BigNumber.from(ethers.utils.arrayify(dao_address))
+
+    try {
+    } catch (e) {}
+
+    setMessage('Preparing UNA metadata... 📤')
+    // unaDocs_
+    let unaDocs_
+    let agreement
+    try {
+      const res = createAgreement(name, tokenId.toString(), mission)
+
+      if (typeof agreement === 'string') {
+        agreement = res
+        setMessage('Agreement created')
+      } else {
+        agreement = 'https://wy.llc.wrappr.documen.eth.link/'
+      }
+
+      let wyUna = {
+        name: name,
+        description: 'Secure your DAO as UNA non-profit and qualify for tax benefits',
+        external_url: 'https://www.wrappr.wtf/',
+        image: logo_,
+        attributes: [
+          { trait_type: 'Jurisdiction', value: 'Wyoming' },
+          { trait_type: 'Entity', value: 'UNA' },
+          { trait_type: 'Agreement', value: agreement },
+        ],
+      }
+      setMessage('Uploading UNA metadata')
+      unaDocs_ = await uploadJSON(wyUna)
+
+      if (!unaDocs_) {
+        setMessage('Error preparing metadata 😭')
+        return
+      }
+    } catch (e: any) {
+      console.log('error', e)
+      setMessage('Error uploading metadata ☹️')
+      return
+    }
+
+    setMessage('Preparing payload...')
     // non-profit wrappr
     const iface = new ethers.utils.Interface(WRAPPR_ABI)
     const unaPayload = iface.encodeFunctionData('mint', [
       dao_address,
-      BigNumber.from(ethers.utils.arrayify(dao_address)),
+      tokenId,
       BigNumber.from(1),
       ethers.constants.HashZero,
-      '',
+      unaDocs_ ?? '',
       dao_address,
     ])
     extensionsArray.push(contracts[7700]['una'])
     extensionsData.push(unaPayload)
 
+    setMessage('Summoning... 🧙‍♂️')
     try {
       const tx = await writeAsync?.({
         recklesslySetUnpreparedArgs: [
@@ -138,7 +186,21 @@ export default function Checkout({ setStep }: Props) {
 
   return (
     <Stack>
-      <Review />
+      {message == '' ? (
+        <Review />
+      ) : (
+        <Box
+          display={'flex'}
+          flexDirection="column"
+          gap={'20'}
+          alignItems="center"
+          justifyContent={'center'}
+          minHeight="96"
+        >
+          <Text size="headingOne">{message}</Text>
+          <Spinner />
+        </Box>
+      )}
       <Stack direction={'horizontal'} align="center" justify={'space-between'}>
         <Button variant="transparent" type="button" onClick={() => setStep(2)}>
           Back
