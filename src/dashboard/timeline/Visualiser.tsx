@@ -20,6 +20,7 @@ export default function Visualiser({
           {accounts.map((account, index) => {
             return (
               <Box
+                key={index}
                 display={'flex'}
                 gap="10"
                 backgroundColor={index % 2 === 0 ? 'foregroundSecondary' : 'backgroundSecondary'}
