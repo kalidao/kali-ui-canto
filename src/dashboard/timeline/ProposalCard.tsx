@@ -2,11 +2,10 @@ import React, { useMemo } from 'react'
 import Link from 'next/link'
 // import Vote from '../proposal/vote'
 import { Heading, Box, Text, Tag, Card, Stack } from '@kalidao/reality'
-import { useQuery } from '@tanstack/react-query'
-import { fetcher } from '~/utils/fetcher'
 import { truncateAddress } from '~/utils/truncateAddress'
 import * as styles from './styles.css'
 import { useDaoStore } from '../useDaoStore'
+import Vote from './Vote'
 
 type Status = {
   text: string
@@ -106,7 +105,7 @@ export default function ProposalCard({ proposal }: PropCardProp) {
           </Text>
         </a>
       </Link>
-      <Box display="flex">{/* <Vote proposal={proposal} /> */}</Box>
+      <Vote id={proposal.id} />
     </Box>
   )
 }
