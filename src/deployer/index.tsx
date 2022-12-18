@@ -18,7 +18,7 @@ export default function DeployerWrapper() {
       title: 'Summon',
       description: `You are about to summon a KaliDAO, an on-chain organization 
       with a native token, voting mechanism, and legal structure. To get 
-      started, pick a name and symbol for your DAO and Token`,
+      started, pick a name and symbol for your DAO and Token.`,
     },
     {
       component: <Metadata setStep={setStep} />,
@@ -34,7 +34,7 @@ export default function DeployerWrapper() {
       component: <Checkout setStep={setStep} />,
       title: 'Checkout',
       description: `Updates to the DAO require proposals, i.e., 
-      minting tokens, amending quorum etc.`,
+      minting tokens, amending quorum, etc.`,
     },
   ]
 
