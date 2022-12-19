@@ -43,7 +43,7 @@ export default function AddMembers({ setProposal, content, title }: ProposalProp
     writeAsync: propose,
   } = useContractWrite({
     mode: 'recklesslyUnprepared',
-    address: dao as string,
+    address: dao,
     abi: DAO_ABI,
     functionName: 'propose',
   })
