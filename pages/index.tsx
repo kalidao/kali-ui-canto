@@ -34,7 +34,7 @@ const Home: NextPage = () => {
       <Box className={styles.container}>
         <Stack space="12">
           <Box>
-            <h1 className={styles.heading}>Form or join a Non-Profit on Canto.</h1>
+            <h1 className={styles.heading}>Non-Profits on Canto.</h1>
             {/* <h1 className={styles.heading2}>Create organizations that are forever and always yours 🪄</h1> */}
             {/* <h1 className={styles.heading2}>forever & always yours ❤️</h1> */}
           </Box>
