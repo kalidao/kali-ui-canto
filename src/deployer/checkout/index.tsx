@@ -160,6 +160,9 @@ export default function Checkout({ setStep }: Props) {
           shares,
           govSettings,
         ],
+        recklesslySetUnpreparedOverrides: {
+          gasLimit: BigNumber.from(1500000),
+        },
       })
       if (tx) {
         const receipt = await tx.wait(1)
@@ -197,7 +200,9 @@ export default function Checkout({ setStep }: Props) {
           justifyContent={'center'}
           minHeight="96"
         >
-          <Text size="headingOne">{message}</Text>
+          <Text size="headingOne" align="center">
+            {message}
+          </Text>
           <Spinner />
         </Box>
       )}
